@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
@@ -15,17 +11,17 @@ namespace WindowsFormsApp1
     public partial class frmRandom : Form
     {
         public Setting Setting { get; set; }
-        public System.Random RandomObj { get; set; }
+        public Random RandomObj { get; set; }
         public bool IsRunning { get; set; } = false;
         public bool InitSucceeded { get; set; } = true;
         public int CurrentExpression { get; set; } = 0;
-        public ResultObjetct ResultObjetct { get; set; }
+        public ResultObject ResultObject { get; set; }
         public frmRandom()
         {
             InitializeComponent();
             LoadDefault();
-            RandomObj = new System.Random();
-            ResultObjetct = new ResultObjetct();
+            RandomObj = new Random();
+            ResultObject = new ResultObject();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -112,7 +108,7 @@ namespace WindowsFormsApp1
         private void LoadDefault()
         {
             rdbShow.Checked = true;
-            txtRandomTimes.Text = "5";
+            txtRandomTimes.Text = "2";
             txtMinValue.Text = "10";
             txtMaxValue.Text = "100";
             txtWaitingTime.Text = "1000";
@@ -120,6 +116,9 @@ namespace WindowsFormsApp1
             cboOperator.Text = "+";
             HideWaitingForResult();
             SaveSetting();
+
+            btNext.BackColor = Color.LightGray;
+            btNextExpression.BackColor = Color.LightGray;
         }
 
         private bool SaveSetting()
@@ -161,21 +160,22 @@ namespace WindowsFormsApp1
 
         private void SetDisableSettingForm(bool isEnable)
         {
-            rdbShow.Enabled = isEnable;
-            txtRandomTimes.Enabled = isEnable;
-            txtExpressionNum.Enabled = isEnable;
-            txtMinValue.Enabled = isEnable;
-            txtMaxValue.Enabled = isEnable;
-            txtWaitingTime.Enabled = isEnable;
-            lblWaitingForResult.Enabled = isEnable;
-            txtWaitingForResult.Enabled = isEnable;
-            btnClear.Enabled = isEnable;
-            btnResetDefault.Enabled = isEnable;
-            btnSaveSetting.Enabled = isEnable;
-            cboOperator.Enabled = isEnable;
-            rdbShow2.Enabled = isEnable;
-            rdbShow3.Enabled = isEnable;
+            //rdbShow.Enabled = isEnable;
+            //txtRandomTimes.Enabled = isEnable;
+            //txtExpressionNum.Enabled = isEnable;
+            //txtMinValue.Enabled = isEnable;
+            //txtMaxValue.Enabled = isEnable;
+            //txtWaitingTime.Enabled = isEnable;
+            //lblWaitingForResult.Enabled = isEnable;
+            //txtWaitingForResult.Enabled = isEnable;
+            //btnClear.Enabled = isEnable;
+            //btnResetDefault.Enabled = isEnable;
+            //btnSaveSetting.Enabled = isEnable;
+            //cboOperator.Enabled = isEnable;
+            //rdbShow2.Enabled = isEnable;
+            //rdbShow3.Enabled = isEnable;
             txtRanDomLabel.Visible = !isEnable;
+            //grbSetting.Enabled = isEnable;
         }
         private void SetIsRunning(bool yes)
         {
@@ -249,16 +249,16 @@ namespace WindowsFormsApp1
                     ShowMessage("Check your setting Value and Try Again!");
                 if (ValidateForm())
                 {
-                    ShowGroupBox(false);
+                    //ShowGroupBox(false);
                     SaveSetting();
                     SetDisableSettingForm(false);
                     SetIsRunning(true);
                     CurrentExpression = 0;
                     timer1.Interval = Setting.WaitingForRandom;
-                    for (int i = 0; i < Setting.NumOfExpression; i++)
-                    {
-                        timer1.Start();
-                    }
+                    //for (int i = 0; i < Setting.NumOfExpression; i++)
+                    //{
+                    timer1.Start();
+                    //}
                 }
                 SaveSetting();
             }
@@ -269,86 +269,114 @@ namespace WindowsFormsApp1
         }
         private void RandomAndWaitingClick()
         {
-            if (ResultObjetct.CurrentIndex == 0)
+            if (ResultObject.CurrentIndex == 0)
             {
-                ResultObjetct = new ResultObjetct();
+                ResultObject = new ResultObject();
                 txtRanDomLabel.Text = "Ready";
-                ResultObjetct.CurrentIndex = ResultObjetct.CurrentIndex + 1;
+                ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
                 CurrentExpression++;
             }
-            else if (ResultObjetct.CurrentIndex < Setting.RandomTime)
+            else if (ResultObject.CurrentIndex < Setting.RandomTime)
             {
-                var ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
-                txtRanDomLabel.Text = "";
-                System.Threading.Thread.Sleep(100);
-                txtRanDomLabel.Text = ranNumber.ToString();
+                //ngưng 100ms trước khi hiện số tiếp theo
+                //txtRanDomLabel.Text = "";
+                //System.Threading.Thread.Sleep(100);
 
-                if (ResultObjetct.CurrentIndex < Setting.RandomTime - 1)
+                //sinh ra số random 
+                var ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
+
+                //kiểm tra với số hiện tại sử dụng thì có bị âm không 
+                //if()
+
+                if (ResultObject.CurrentIndex < Setting.RandomTime)
                 {
-                    ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ranNumber.ToString() + " " + Setting.Operator + " ";
+                    string currentexp;
+                    if (ResultObject.CurrentIndex == 1)
+                    {
+                        currentexp = ranNumber.ToString() + " ";
+                    }
+                    else
+                    {
+                        int c = RandomObj.Next(1, 3);
+                        Console.WriteLine(c);
+                        string randomop =  c > 1 ? "+" : "-";
+                        currentexp = (Setting.Operator == "+-" ? randomop : Setting.Operator) + " " + ranNumber.ToString();
+                    }
+                    ResultObject.ValueRaned += currentexp;
+                    txtRanDomLabel.Text = currentexp.Replace("+ ","");
                 }
                 else
                 {
-                    ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ranNumber.ToString() + " = ";
+                    ResultObject.ValueRaned = ResultObject.ValueRaned + " = ";
                 }
-                ResultObjetct.SumValue = GetSequenceValue(ResultObjetct.SumValue, ranNumber);
-                ResultObjetct.CurrentIndex = ResultObjetct.CurrentIndex + 1;
-                lblCurrentExpression.Text = ResultObjetct.ValueRaned;
+
+                //tính kết quả phép tính sau khi thêm random number
+                //ResultObjetct.SumValue = GetSequenceValue(ResultObjetct.SumValue, ranNumber);
+                //ResultObjetct.SumValue = Int32.Parse( new DataTable().Compute(ResultObjetct.ValueRaned, null).ToString());
+
+                ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
+                lblCurrentExpression.Text = ResultObject.ValueRaned;
             }
-            else if (ResultObjetct.CurrentIndex == Setting.RandomTime)
+            else if (ResultObject.CurrentIndex == Setting.RandomTime)
             {
-                ResultObjetct.CurrentIndex = 0;
-                ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ResultObjetct.SumValue.ToString();
+                ResultObject.CurrentIndex = 0;
+                //tinh gia tri cuoi cung
+                string currentExpression = ResultObject.ValueRaned.Replace("=", "");
+                ResultObject.SumValue = Double.Parse(new DataTable().Compute(currentExpression, null).ToString());
+                ResultObject.ValueRaned = ResultObject.ValueRaned + ResultObject.SumValue.ToString();
                 txtRanDomLabel.Text = " = ";
-                ResultObjetct.IsFinish = true;
+                ResultObject.IsFinish = true;
 
                 timer1.Stop();
+                //hiện nút 'hiển thị kết quả'
+                btNext.Enabled = true;
+                btNext.BackColor = Color.DodgerBlue;
             }
         }
 
         private void RandomAndAutoShow()
         {
-            if (ResultObjetct.CurrentIndex == 0)
+            if (ResultObject.CurrentIndex == 0)
             {
-                ResultObjetct = new ResultObjetct();
+                ResultObject = new ResultObject();
                 System.Threading.Thread.Sleep(Setting.WaitingForRandom);
                 txtRanDomLabel.Text = "Ready";
-                ResultObjetct.CurrentIndex = ResultObjetct.CurrentIndex + 1;
+                ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
                 CurrentExpression++;
                 System.Threading.Thread.Sleep(Setting.WaitingForRandom);
             }
-            else if (ResultObjetct.CurrentIndex < Setting.RandomTime)
+            else if (ResultObject.CurrentIndex < Setting.RandomTime)
             {
                 var ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
                 txtRanDomLabel.Text = "";
                 System.Threading.Thread.Sleep(100);
                 txtRanDomLabel.Text = ranNumber.ToString();
 
-                if (ResultObjetct.CurrentIndex < Setting.RandomTime - 1)
+                if (ResultObject.CurrentIndex < Setting.RandomTime - 1)
                 {
-                    ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ranNumber.ToString() + " " + Setting.Operator + " ";
+                    ResultObject.ValueRaned = ResultObject.ValueRaned + ranNumber.ToString() + " " + Setting.Operator + " ";
                 }
                 else
                 {
-                    ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ranNumber.ToString() + " = ";
+                    ResultObject.ValueRaned = ResultObject.ValueRaned + ranNumber.ToString() + " = ";
                 }
-                ResultObjetct.SumValue = GetSequenceValue(ResultObjetct.SumValue, ranNumber);
-                ResultObjetct.CurrentIndex = ResultObjetct.CurrentIndex + 1;
-                lblCurrentExpression.Text = ResultObjetct.ValueRaned;
+                //ResultObject.SumValue = GetSequenceValue(ResultObject.SumValue, ranNumber);
+                ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
+                lblCurrentExpression.Text = ResultObject.ValueRaned;
             }
-            else if (ResultObjetct.CurrentIndex == Setting.RandomTime)
+            else if (ResultObject.CurrentIndex == Setting.RandomTime)
             {
-                ResultObjetct.CurrentIndex = ResultObjetct.CurrentIndex + 1;
-                ResultObjetct.ValueRaned = ResultObjetct.ValueRaned + ResultObjetct.SumValue.ToString();
+                ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
+                ResultObject.ValueRaned = ResultObject.ValueRaned + ResultObject.SumValue.ToString();
                 txtRanDomLabel.Text = " = ";
 
             }
-            else if (ResultObjetct.CurrentIndex > Setting.RandomTime)
+            else if (ResultObject.CurrentIndex > Setting.RandomTime)
             {
-                ResultObjetct.CurrentIndex = 0;
+                ResultObject.CurrentIndex = 0;
                 System.Threading.Thread.Sleep(Setting.WaitingForResult);
-                txtRanDomLabel.Text = " = " + ResultObjetct.SumValue.ToString();
-                lblCurrentExpression.Text = ResultObjetct.ValueRaned;
+                txtRanDomLabel.Text = " = " + ResultObject.SumValue.ToString();
+                lblCurrentExpression.Text = ResultObject.ValueRaned;
             }
 
         }
@@ -368,6 +396,8 @@ namespace WindowsFormsApp1
                 case "-":
                     result -= ranNumber;
                     break;
+                case "--":
+                //
                 default: break;
             }
             return result;
@@ -382,7 +412,9 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    timer1.Stop(); btnStop.PerformClick();
+                    timer1.Stop();
+                    btnStop.PerformClick();
+                    btNext.Enabled = true;
                 }
             }
             else if (Setting.ShowResultSetting == 2)
@@ -407,19 +439,19 @@ namespace WindowsFormsApp1
         }
         private void frmRandom_DoubleClick(object sender, EventArgs e)
         {
-            if (ResultObjetct != null && ResultObjetct.CurrentIndex == 0 && ResultObjetct.IsFinish && this.IsRunning && Setting.ShowResultSetting == 1)
-            {
-                txtRanDomLabel.Text = " = " + ResultObjetct.SumValue.ToString();
-                lblCurrentExpression.Text = ResultObjetct.ValueRaned;
-                if (CurrentExpression < Setting.NumOfExpression)
-                {
-                    timer1.Start();
-                }
-                else
-                {
-                    btnStop.PerformClick();
-                }
-            }
+            //if (ResultObjetct != null && ResultObjetct.CurrentIndex == 0 && ResultObjetct.IsFinish && this.IsRunning && Setting.ShowResultSetting == 1)
+            //{
+            //    txtRanDomLabel.Text = " = " + ResultObjetct.SumValue.ToString();
+            //    lblCurrentExpression.Text = ResultObjetct.ValueRaned;
+            //    if (CurrentExpression < Setting.NumOfExpression)
+            //    {
+            //        timer1.Start();
+            //    }
+            //    else
+            //    {
+            //        btnStop.PerformClick();
+            //    }
+            //}
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -428,6 +460,31 @@ namespace WindowsFormsApp1
             timer1.Stop();
             SetIsRunning(false);
             SetDisableSettingForm(true);
+        }
+
+        private void btNext_Click(object sender, EventArgs e)
+        {
+            if (ResultObject != null && ResultObject.CurrentIndex == 0 && ResultObject.IsFinish && this.IsRunning && Setting.ShowResultSetting == 1)
+            {
+                txtRanDomLabel.Text = " = " + ResultObject.SumValue.ToString();
+                lblCurrentExpression.Text = ResultObject.ValueRaned;
+
+                btNextExpression.Enabled = true;
+                btNextExpression.BackColor = Color.DodgerBlue;
+
+                btNext.Enabled = false;
+                btNext.BackColor = Color.LightGray;
+            }
+        }
+
+        private void btNextExpression_Click(object sender, EventArgs e)
+        {
+            if (CurrentExpression < Setting.NumOfExpression)
+            {
+                btNextExpression.Enabled = false;
+                btNextExpression.BackColor = Color.LightGray;
+                timer1.Start();
+            }
         }
     }
 }

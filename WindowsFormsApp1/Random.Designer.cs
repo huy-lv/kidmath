@@ -60,6 +60,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.grbUserResult = new System.Windows.Forms.GroupBox();
             this.txtRanDomLabel = new System.Windows.Forms.Label();
+            this.btNext = new System.Windows.Forms.Button();
+            this.btNextExpression = new System.Windows.Forms.Button();
             this.grbSetting.SuspendLayout();
             this.grbShow.SuspendLayout();
             this.grbAction.SuspendLayout();
@@ -119,7 +121,8 @@
             this.cboOperator.FormattingEnabled = true;
             this.cboOperator.Items.AddRange(new object[] {
             "+",
-            "-"});
+            "-",
+            "+-"});
             this.cboOperator.Location = new System.Drawing.Point(199, 156);
             this.cboOperator.Name = "cboOperator";
             this.cboOperator.Size = new System.Drawing.Size(128, 21);
@@ -306,9 +309,12 @@
             // 
             // lvUserResult
             // 
+            this.lvUserResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvUserResult.Location = new System.Drawing.Point(5, 19);
             this.lvUserResult.Name = "lvUserResult";
-            this.lvUserResult.Size = new System.Drawing.Size(321, 398);
+            this.lvUserResult.Size = new System.Drawing.Size(321, 358);
             this.lvUserResult.TabIndex = 3;
             this.lvUserResult.UseCompatibleStateImageBehavior = false;
             // 
@@ -363,9 +369,8 @@
             this.lblCurrentExpression.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblCurrentExpression.Location = new System.Drawing.Point(171, 64);
             this.lblCurrentExpression.Name = "lblCurrentExpression";
-            this.lblCurrentExpression.Size = new System.Drawing.Size(32, 13);
+            this.lblCurrentExpression.Size = new System.Drawing.Size(0, 13);
             this.lblCurrentExpression.TabIndex = 1;
-            this.lblCurrentExpression.Text = "result";
             this.lblCurrentExpression.Visible = false;
             // 
             // timer1
@@ -389,12 +394,44 @@
             this.txtRanDomLabel.AutoSize = true;
             this.txtRanDomLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 200F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRanDomLabel.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.txtRanDomLabel.Location = new System.Drawing.Point(210, 169);
+            this.txtRanDomLabel.Location = new System.Drawing.Point(341, 91);
             this.txtRanDomLabel.Name = "txtRanDomLabel";
             this.txtRanDomLabel.Size = new System.Drawing.Size(903, 302);
             this.txtRanDomLabel.TabIndex = 8;
             this.txtRanDomLabel.Text = "Ready";
             this.txtRanDomLabel.Visible = false;
+            // 
+            // btNext
+            // 
+            this.btNext.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btNext.Enabled = false;
+            this.btNext.FlatAppearance.BorderSize = 0;
+            this.btNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btNext.ForeColor = System.Drawing.Color.White;
+            this.btNext.Location = new System.Drawing.Point(606, 469);
+            this.btNext.Name = "btNext";
+            this.btNext.Size = new System.Drawing.Size(181, 56);
+            this.btNext.TabIndex = 9;
+            this.btNext.Text = "Hiển thị kết quả";
+            this.btNext.UseVisualStyleBackColor = false;
+            this.btNext.Click += new System.EventHandler(this.btNext_Click);
+            // 
+            // btNextExpression
+            // 
+            this.btNextExpression.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btNextExpression.Enabled = false;
+            this.btNextExpression.FlatAppearance.BorderSize = 0;
+            this.btNextExpression.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btNextExpression.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btNextExpression.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btNextExpression.Location = new System.Drawing.Point(829, 469);
+            this.btNextExpression.Name = "btNextExpression";
+            this.btNextExpression.Size = new System.Drawing.Size(202, 56);
+            this.btNextExpression.TabIndex = 10;
+            this.btNextExpression.Text = "Phép tính tiếp theo";
+            this.btNextExpression.UseVisualStyleBackColor = false;
+            this.btNextExpression.Click += new System.EventHandler(this.btNextExpression_Click);
             // 
             // frmRandom
             // 
@@ -402,6 +439,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.btNextExpression);
+            this.Controls.Add(this.btNext);
             this.Controls.Add(this.txtRanDomLabel);
             this.Controls.Add(this.grbUserResult);
             this.Controls.Add(this.grbAction);
@@ -455,6 +494,8 @@
         private System.Windows.Forms.Label txtRanDomLabel;
         private System.Windows.Forms.ComboBox cboOperator;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btNext;
+        private System.Windows.Forms.Button btNextExpression;
     }
 }
 
