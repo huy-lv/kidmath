@@ -409,7 +409,7 @@
             this.btNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btNext.ForeColor = System.Drawing.Color.White;
-            this.btNext.Location = new System.Drawing.Point(606, 469);
+            this.btNext.Location = new System.Drawing.Point(603, 646);
             this.btNext.Name = "btNext";
             this.btNext.Size = new System.Drawing.Size(181, 56);
             this.btNext.TabIndex = 9;
@@ -425,7 +425,7 @@
             this.btNextExpression.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btNextExpression.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btNextExpression.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btNextExpression.Location = new System.Drawing.Point(829, 469);
+            this.btNextExpression.Location = new System.Drawing.Point(812, 646);
             this.btNextExpression.Name = "btNextExpression";
             this.btNextExpression.Size = new System.Drawing.Size(202, 56);
             this.btNextExpression.TabIndex = 10;

@@ -284,26 +284,34 @@ namespace WindowsFormsApp1
 
                 //sinh ra số random 
                 var ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
+                txtRanDomLabel.Font = new Font("Arial", 300);
 
-                //kiểm tra với số hiện tại sử dụng thì có bị âm không 
-                //if()
 
                 if (ResultObject.CurrentIndex < Setting.RandomTime)
                 {
                     string currentexp;
                     if (ResultObject.CurrentIndex == 1)
                     {
-                        currentexp = ranNumber.ToString() + " ";
+                        currentexp = ranNumber.ToString();
                     }
                     else
                     {
-                        int c = RandomObj.Next(1, 3);
-                        Console.WriteLine(c);
-                        string randomop =  c > 1 ? "+" : "-";
-                        currentexp = (Setting.Operator == "+-" ? randomop : Setting.Operator) + " " + ranNumber.ToString();
+                        
+                        string randomop = getRamdomOperator();
+
+                        //kiểm tra với số hiện tại sử dụng thì có bị âm không 
+                        string tempExp;
+                        do
+                        {
+                            randomop = getRamdomOperator();
+                            ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
+                            tempExp = ResultObject.ValueRaned + " " +(Setting.Operator == "+-" ? randomop : Setting.Operator) + " " + ranNumber.ToString();
+                        } while (Double.Parse(new DataTable().Compute(tempExp, null).ToString()) < 0);
+                        currentexp = " " + (Setting.Operator == "+-" ? randomop : Setting.Operator) + " " +ranNumber.ToString();
                     }
                     ResultObject.ValueRaned += currentexp;
-                    txtRanDomLabel.Text = currentexp.Replace("+ ","");
+                    //in ra số vừa được lấy random, nếu có dấu + đằng trước thì bỏ dấu + đi, dấu trừ thì để lại
+                    txtRanDomLabel.Text = currentexp.Replace(" + ", "");
                 }
                 else
                 {
@@ -323,7 +331,7 @@ namespace WindowsFormsApp1
                 //tinh gia tri cuoi cung
                 string currentExpression = ResultObject.ValueRaned.Replace("=", "");
                 ResultObject.SumValue = Double.Parse(new DataTable().Compute(currentExpression, null).ToString());
-                ResultObject.ValueRaned = ResultObject.ValueRaned + ResultObject.SumValue.ToString();
+                ResultObject.ValueRaned += " = " + ResultObject.SumValue.ToString();
                 txtRanDomLabel.Text = " = ";
                 ResultObject.IsFinish = true;
 
@@ -332,6 +340,12 @@ namespace WindowsFormsApp1
                 btNext.Enabled = true;
                 btNext.BackColor = Color.DodgerBlue;
             }
+        }
+
+        private string getRamdomOperator()
+        {
+            //sinh 1 số random từ 1 đến 4, nếu bé hơn 2 thì là dấu -, tỉ lệ xuất hiện +/- là 75/25
+            return RandomObj.Next(1, 5) < 2 ? "-" : "+";
         }
 
         private void RandomAndAutoShow()
@@ -464,9 +478,10 @@ namespace WindowsFormsApp1
 
         private void btNext_Click(object sender, EventArgs e)
         {
+            //khi click nút 'hiển thị kết quả'
             if (ResultObject != null && ResultObject.CurrentIndex == 0 && ResultObject.IsFinish && this.IsRunning && Setting.ShowResultSetting == 1)
             {
-                txtRanDomLabel.Text = " = " + ResultObject.SumValue.ToString();
+                txtRanDomLabel.Text = "=" + ResultObject.SumValue.ToString();
                 lblCurrentExpression.Text = ResultObject.ValueRaned;
 
                 btNextExpression.Enabled = true;
@@ -479,6 +494,7 @@ namespace WindowsFormsApp1
 
         private void btNextExpression_Click(object sender, EventArgs e)
         {
+            //click nút phép tính tiếp theo
             if (CurrentExpression < Setting.NumOfExpression)
             {
                 btNextExpression.Enabled = false;
