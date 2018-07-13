@@ -392,11 +392,11 @@
             // txtRanDomLabel
             // 
             this.txtRanDomLabel.AutoSize = true;
-            this.txtRanDomLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 200F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRanDomLabel.Font = new System.Drawing.Font("Arial", 200.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRanDomLabel.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.txtRanDomLabel.Location = new System.Drawing.Point(341, 91);
             this.txtRanDomLabel.Name = "txtRanDomLabel";
-            this.txtRanDomLabel.Size = new System.Drawing.Size(903, 302);
+            this.txtRanDomLabel.Size = new System.Drawing.Size(896, 299);
             this.txtRanDomLabel.TabIndex = 8;
             this.txtRanDomLabel.Text = "Ready";
             this.txtRanDomLabel.Visible = false;

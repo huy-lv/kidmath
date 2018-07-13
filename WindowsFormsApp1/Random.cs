@@ -108,12 +108,12 @@ namespace WindowsFormsApp1
         private void LoadDefault()
         {
             rdbShow.Checked = true;
-            txtRandomTimes.Text = "2";
+            txtRandomTimes.Text = "12";
             txtMinValue.Text = "10";
             txtMaxValue.Text = "100";
             txtWaitingTime.Text = "1000";
             txtExpressionNum.Text = "5";
-            cboOperator.Text = "+";
+            cboOperator.Text = "+-";
             HideWaitingForResult();
             SaveSetting();
 
@@ -273,18 +273,19 @@ namespace WindowsFormsApp1
             {
                 ResultObject = new ResultObject();
                 txtRanDomLabel.Text = "Ready";
+                           txtRanDomLabel.Font = new Font("Arial", 200);
                 ResultObject.CurrentIndex = ResultObject.CurrentIndex + 1;
                 CurrentExpression++;
             }
             else if (ResultObject.CurrentIndex < Setting.RandomTime)
             {
                 //ngưng 100ms trước khi hiện số tiếp theo
-                //txtRanDomLabel.Text = "";
-                //System.Threading.Thread.Sleep(100);
+                txtRanDomLabel.Text = "";
+                System.Threading.Thread.Sleep(100);
 
                 //sinh ra số random 
                 var ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
-                txtRanDomLabel.Font = new Font("Arial", 300);
+                txtRanDomLabel.Font = new Font("Arial", 250);
 
 
                 if (ResultObject.CurrentIndex < Setting.RandomTime)
@@ -292,26 +293,27 @@ namespace WindowsFormsApp1
                     string currentexp;
                     if (ResultObject.CurrentIndex == 1)
                     {
-                        currentexp = ranNumber.ToString();
+                        currentexp =  " " +ranNumber.ToString()  ;
                     }
                     else
                     {
-                        
-                        string randomop = getRamdomOperator();
-
-                        //kiểm tra với số hiện tại sử dụng thì có bị âm không 
+                        string randomop;
                         string tempExp;
+                        double result;
                         do
                         {
+                        //kiểm tra với số hiện tại sử dụng thì có bị âm không 
                             randomop = getRamdomOperator();
                             ranNumber = GetRandom(Setting.MinValue, Setting.MaxValue);
                             tempExp = ResultObject.ValueRaned + " " +(Setting.Operator == "+-" ? randomop : Setting.Operator) + " " + ranNumber.ToString();
-                        } while (Double.Parse(new DataTable().Compute(tempExp, null).ToString()) < 0);
-                        currentexp = " " + (Setting.Operator == "+-" ? randomop : Setting.Operator) + " " +ranNumber.ToString();
+                            result = Double.Parse(new DataTable().Compute(tempExp, null).ToString());
+                            Console.WriteLine(tempExp + " " + result);
+                        } while (result < 0);
+                        currentexp = " " + (Setting.Operator == "+-" ? randomop : Setting.Operator) + " " + ranNumber.ToString();
                     }
                     ResultObject.ValueRaned += currentexp;
                     //in ra số vừa được lấy random, nếu có dấu + đằng trước thì bỏ dấu + đi, dấu trừ thì để lại
-                    txtRanDomLabel.Text = currentexp.Replace(" + ", "");
+                    txtRanDomLabel.Text = currentexp.Replace(" + ", " ").Replace(" - ","-");
                 }
                 else
                 {
@@ -500,6 +502,7 @@ namespace WindowsFormsApp1
                 btNextExpression.Enabled = false;
                 btNextExpression.BackColor = Color.LightGray;
                 timer1.Start();
+
             }
         }
     }
